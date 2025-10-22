@@ -59,7 +59,7 @@ def prep(ground, crop = None, fertilize = False):
         measurements.insert(row,values)
     return measurements
     
-def goto_no_wrap(x, y): #in case I forgot to remove apple in di
+def goto_no_wrap(x, y):
     dx = (x - get_pos_x())
     dy = (y - get_pos_y()) 
     while dx > 0:
