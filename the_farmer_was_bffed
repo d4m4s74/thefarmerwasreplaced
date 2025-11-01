@@ -56,35 +56,64 @@ def the_farmer_was_brainfucked(code):
     plants_with_companions = {Entities.Grass,Entities.Bush,Entities.Tree,Entities.Carrot}
     plants_with_values = {Entities.Cactus,Entities.Sunflower}
     pumpkin_numbers = dict()
+    bracket_partners = dict()
     while ptr < code_length:
         if code[ptr] == '>':
-            data_ptr += 1
-            if data_ptr == len(memory):
-                memory.append(0)
+            while code[ptr] == '>':
+                data_ptr += 1
+                if data_ptr == len(memory):
+                    memory.append(0)
+                ptr += 1
         elif code[ptr] == '<':
-            data_ptr -= 1
+            while code[ptr] == '<':
+                data_ptr -= 1
+                ptr += 1
         elif code[ptr] == '+':
-            memory[data_ptr] = (memory[data_ptr] + 1) % 256
+            while code[ptr] == '+':
+                memory[data_ptr] = memory[data_ptr] + 1
+                ptr += 1
+            memory[data_ptr] = memory[data_ptr] % 256
         elif code[ptr] == '-':
-            memory[data_ptr] = (memory[data_ptr] - 1) % 256
+            while code[ptr] == '-':
+                memory[data_ptr] = memory[data_ptr] - 1
+                ptr += 1
+            memory[data_ptr] = memory[data_ptr] % 256
         elif code[ptr] == '[':
             if memory[data_ptr] == 0:
-                open_brackets = 1
-                while open_brackets > 0:
-                    ptr += 1
-                    if code[ptr] == '[':
-                        open_brackets += 1
-                    elif code[ptr] == ']':
-                        open_brackets -= 1
+                if code[ptr+1] == '-' and code[ptr+2] == ']':
+                    memory[data_ptr] = 0
+                    ptr += 2
+                else:
+                    if ptr in bracket_partners:
+                        ptr = bracket_partners[ptr]
+                    else:
+                        start = ptr
+                        open_brackets = 1
+                        while open_brackets > 0:
+                            ptr += 1
+                            if code[ptr] == '[':
+                                open_brackets += 1
+                            elif code[ptr] == ']':
+                                open_brackets -= 1
+                        bracket_partners[start] = ptr
+                        bracket_partners[ptr] = start
+            ptr += 1
         elif code[ptr] == ']':
             if memory[data_ptr] != 0:
-                close_brackets = 1
-                while close_brackets > 0:
-                    ptr -= 1
-                    if code[ptr] == '[':
-                        close_brackets -= 1
-                    elif code[ptr] == ']':
-                        close_brackets += 1
+                if ptr in bracket_partners:
+                    ptr = bracket_partners[ptr]
+                else:
+                    start = ptr
+                    close_brackets = 1
+                    while close_brackets > 0:
+                        ptr -= 1
+                        if code[ptr] == '[':
+                            close_brackets -= 1
+                        elif code[ptr] == ']':
+                            close_brackets += 1
+                    bracket_partners[start] = ptr
+                    bracket_partners[ptr] = start
+            ptr += 1
         elif code[ptr] == '.':
             #quick_print("write: ", memory[data_ptr])
             if memory[data_ptr] == 0:
@@ -111,6 +140,7 @@ def the_farmer_was_brainfucked(code):
                 plant(plants_write[memory[data_ptr]])
                 plant_info = []
                 info_ptr = 0
+            ptr += 1
         elif code[ptr] == ',':
             if len(plant_info) == 0:
                 plant_type = get_entity_type()
@@ -127,6 +157,8 @@ def the_farmer_was_brainfucked(code):
                 plant_type_shifted = left_shift(plants_read[plant_type],2)
                 first_byte = water_level_shifted + plant_type_shifted + left_shift(tilled,1) + harvestable
                 plant_info.append(first_byte)
+            elif len(plant_info) == 1:
+                plant_type = get_entity_type()
                 if plant_type in plants_with_companions:
                     companion, (x, y) = get_companion()
                     plant_info.append(left_shift(1,7) + plants_read[companion])
@@ -147,14 +179,15 @@ def the_farmer_was_brainfucked(code):
                     center = measure()
                     if center not in pumpkin_numbers:
                         pumpkin_numbers[center] = len(pumpkin_numbers)%256
-                    plant_info.append(pumpkin_numbers[center])    
+                    plant_info.append(pumpkin_numbers[center])  
             #quick_print("Read: ", plant_info[info_ptr])
             memory[data_ptr] = plant_info[info_ptr]
             info_ptr = info_ptr + 1
-            if info_ptr >= len(plant_info):
+            if len(plant_info) > 1 and info_ptr >= len(plant_info):
                 plant_info = []
                 info_ptr = 0
-        ptr += 1
+            ptr += 1
+        
 
                 
 # simple carrot farm program in python:
