@@ -28,7 +28,7 @@ check for value 4
 [>+>+<<-]                    # move value to helper cells 1 and 2
 >>[<<+>>-]                   # move value back to value cell
 <----                        # subtract test number (4) from value cell
-[++++>-1<[-]]                # if the value is not 0 revert value and pre negate the test flag
+[++++>-<[-]]                 # if the value is not 0 revert value and pre negate the test flag
 >+                           # set flag to indicate loop
 [>.>>.<<<<<[-]>>[-]]         # print cell 5 (till) and 7 (plant) clear value then reset flag
 <<                           # return to value cell
@@ -38,7 +38,7 @@ check for value 5
 [>+>+<<-]                    # move value to helper cells 1 and 2
 >>[<<+>>-]                   # move value back to value cell
 <-----                       # subtract test number (5) from value cell
-[+++++>-<[-]]               # if the value is not 0 revert value and pre negate the test flag
+[+++++>-<[-]]                # if the value is not 0 revert value and pre negate the test flag
 >+                           # set flag to indicate loop
 [>.>>.<<<<<[-]>>[-]]         # print cell 5 (till) and 7 (plant) clear value then reset flag
 <<                           # return to value cell and end elif
