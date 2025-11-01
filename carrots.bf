@@ -12,42 +12,42 @@
 
 +[>++++++++[>,              # start outer infinite loop and inner 8x8 loop and read input into cell 2
 
-check for value 19         #most expensive first
+# check for value 19         #most expensive first
 >[-]>[-]<<                   # first clear helper cells
 [>+>+<<-]                    # move value to helper cells 1 and 2
 >>[<<+>>-]                   # move value back to value cell
 <-------------------         # subtract test number (19) from value cell
-[+++++++++++++++++++>-<[-]]  # if the value is not 0 revert value and pre negate the test flag
+[>-<[-]]  # if the value is not 0 revert value and pre negate the test flag
 >+                           # set flag to indicate loop
 [>>.>.<<<<<[-]>>[-]]         # print cell 6 (harvest) and 7 (plant) clear value then reset flag
 <<                           # return to value cell
 
-check for value 4
+# check for value 4
 
 >[-]>[-]<<                   # first clear helper cells
 [>+>+<<-]                    # move value to helper cells 1 and 2
 >>[<<+>>-]                   # move value back to value cell
 <----                        # subtract test number (4) from value cell
-[++++>-<[-]]                 # if the value is not 0 revert value and pre negate the test flag
+[>-<[-]]                 # if the value is not 0 revert value and pre negate the test flag
 >+                           # set flag to indicate loop
 [>.>>.<<<<<[-]>>[-]]         # print cell 5 (till) and 7 (plant) clear value then reset flag
 <<                           # return to value cell
 
-check for value 5
+# check for value 56
 >[-]>[-]<<                   # first clear helper cells
 [>+>+<<-]                    # move value to helper cells 1 and 2
 >>[<<+>>-]                   # move value back to value cell
 <-----                       # subtract test number (5) from value cell
-[+++++>-<[-]]                # if the value is not 0 revert value and pre negate the test flag
+[>-<[-]]                # if the value is not 0 revert value and pre negate the test flag
 >+                           # set flag to indicate loop
 [>.>>.<<<<<[-]>>[-]]         # print cell 5 (till) and 7 (plant) clear value then reset flag
 <<                           # return to value cell and end elif
 
 
 
-Reset inner loop
+# Reset inner loop
 <                            # go to counter cell
-output move east
+# output move east
 >>>>>>>.<<<<<<<              # output 5
 -                            # decrement counter
 ]<                           # end loop and go to outer loop
