@@ -18,23 +18,31 @@ set_world_size(8)
 # first:
 # 0wwpppth (water level (0-.25, .25-.5, .5-.75, .75-1), plant type, tilled state, harvestable)
 # second if companion:
-# 01000xxx (plant)
+# 00000xxx (plant)
 # third if companion:
-# 1000xxxxx (X)
+# 000xxxxx (X)
 # fourth if companion:
-# 110xxxxx (Y)
+# 000xxxxx (Y)
 # second if measure cactus or sunflower:
 # 0000xxxx (value center)
 # third if measure cactus or sunflower
-# 0010xxxx (value north)
+# 0000xxxx (value north)
 # fourth if measure cactus or sunflower
-# 0100xxxx (value east)
+# 0000xxxx (value east)
 # fifth if measure cactus or sunflower
-# 0110xxxx (value south)
+# 0000xxxx (value south)
 # sixth if measure cactus or sunflower
-# 1000xxxx (value west)
+# 0000xxxx (value west)
 # second if measure pumpkin
 # xxxxxxxx (counting 0 to 255 for every unique pumpkin, center)
+# third if measure pumpkin
+# xxxxxxxx (counting 0 to 255 for every unique pumpkin, north)
+# fourth if measure pumpkin
+# xxxxxxxx (counting 0 to 255 for every unique pumpkin, east)
+# fifth if measure pumpkin
+# xxxxxxxx (counting 0 to 255 for every unique pumpkin, south)
+# sixth if measure pumpkin
+# xxxxxxxx (counting 0 to 255 for every unique pumpkin, west)
  
 def left_shift(x, n):
     return x * (2 ** n)
@@ -167,9 +175,9 @@ def the_farmer_was_brainfucked(code):
                 plant_type = get_entity_type()
                 if plant_type in plants_with_companions:
                     companion, (x, y) = get_companion()
-                    plant_info.append(left_shift(1,7) + plants_read[companion])
-                    plant_info.append(128 + x)
-                    plant_info.append(192 + y)
+                    plant_info.append(plants_read[companion])
+                    plant_info.append(x)
+                    plant_info.append(y)
                 elif plant_type in plants_with_values:
                     center = measure()
                     north = measure(North)
@@ -177,15 +185,31 @@ def the_farmer_was_brainfucked(code):
                     south = measure(South)
                     west = measure(West)
                     plant_info.append(center)
-                    plant_info.append(32 + north)
-                    plant_info.append(64 + east)
-                    plant_info.append(96 + south)
-                    plant_info.append(128 + west)
+                    plant_info.append(north)
+                    plant_info.append(east)
+                    plant_info.append(south)
+                    plant_info.append(west)
                 elif plant_type == Entities.Pumpkin:
                     center = measure()
                     if center not in pumpkin_numbers:
                         pumpkin_numbers[center] = len(pumpkin_numbers)%256
                     plant_info.append(pumpkin_numbers[center])  
+                    north = measure(North)
+                    if north not in pumpkin_numbers:
+                        pumpkin_numbers[north] = len(pumpkin_numbers)%256
+                    plant_info.append(pumpkin_numbers[north])  
+                    east = measure(East)
+                    if east not in pumpkin_numbers:
+                        pumpkin_numbers[east] = len(pumpkin_numbers)%256  
+                    plant_info.append(pumpkin_numbers[east])  
+                    south = measure(South)
+                    if south not in pumpkin_numbers:
+                        pumpkin_numbers[south] = len(pumpkin_numbers)%256  
+                    plant_info.append(pumpkin_numbers[south])  
+                    west = measure(West)
+                    if west not in pumpkin_numbers: 
+                        pumpkin_numbers[west] = len(pumpkin_numbers)%256  
+                    plant_info.append(pumpkin_numbers[west])
             #quick_print("Read: ", plant_info[info_ptr])
             memory[data_ptr] = plant_info[info_ptr]
             info_ptr = info_ptr + 1
