@@ -237,7 +237,7 @@ def the_farmer_was_brainfucked(code):
 
 # # first generate standard outputs
 # >>>>>>>                                # move to cell 7
-# <[-]++++++++++++++++[>++++++++<-]>+++  # cell 7 = 128 (plant) plus 3 (carrot)
+# <[-]++++++++++++++++[>++++++++<-]>+++  # cell 7 = 127 (plant) plus 4 (carrot)
 # >[-]+++++                              # cell 8 = 4 (move) plus 1 (East)
 # >[-]++++                               # cell 9 = 4 (move) plus 0 (North)
 # <<<                                    # go back to cell 6
