@@ -70,33 +70,39 @@ def the_farmer_was_brainfucked(code):
                 ptr += 1
         elif code[ptr] == '+':
             while code[ptr] == '+':
-                memory[data_ptr] = memory[data_ptr] + 1
+                memory[data_ptr] += 1
                 ptr += 1
             memory[data_ptr] = memory[data_ptr] % 256
         elif code[ptr] == '-':
             while code[ptr] == '-':
-                memory[data_ptr] = memory[data_ptr] - 1
+                memory[data_ptr] -= 1
                 ptr += 1
             memory[data_ptr] = memory[data_ptr] % 256
         elif code[ptr] == '[':
             if memory[data_ptr] == 0:
+                if ptr in bracket_partners:
+                    ptr = bracket_partners[ptr]
+                else:
+                    start = ptr
+                    open_brackets = 1
+                    while open_brackets > 0:
+                        ptr += 1
+                        if code[ptr] == '[':
+                            open_brackets += 1
+                        elif code[ptr] == ']':
+                            open_brackets -= 1
+                    bracket_partners[start] = ptr
+                    bracket_partners[ptr] = start
+            else:
                 if code[ptr+1] == '-' and code[ptr+2] == ']':
                     memory[data_ptr] = 0
                     ptr += 2
-                else:
-                    if ptr in bracket_partners:
-                        ptr = bracket_partners[ptr]
-                    else:
-                        start = ptr
-                        open_brackets = 1
-                        while open_brackets > 0:
-                            ptr += 1
-                            if code[ptr] == '[':
-                                open_brackets += 1
-                            elif code[ptr] == ']':
-                                open_brackets -= 1
-                        bracket_partners[start] = ptr
-                        bracket_partners[ptr] = start
+                elif code[ptr:ptr+19] == '[>+>+<<-]>>[<<+>>-]':
+                    #copy value to next memory cell
+                    memory[data_ptr + 1] = memory[data_ptr]
+                    data_ptr += 2
+                    ptr += 18
+                    
             ptr += 1
         elif code[ptr] == ']':
             if memory[data_ptr] != 0:
@@ -224,7 +230,7 @@ def the_farmer_was_brainfucked(code):
 # [>+>+<<-]                    # move value to helper cells 1 and 2
 # >>[<<+>>-]                   # move value back to value cell
 # <-------------------         # subtract test number (19) from value cell
-# [+++++++++++++++++++>-<[-]]  # if the value is not 0 revert value and pre negate the test flag
+# [>-<[-]]  # if the value is not 0 revert value and pre negate the test flag
 # >+                           # set flag to indicate loop
 # [>>.>.<<<<<[-]>>[-]]         # print cell 6 (harvest) and 7 (plant) clear value then reset flag
 # <<                           # return to value cell
@@ -235,17 +241,17 @@ def the_farmer_was_brainfucked(code):
 # [>+>+<<-]                    # move value to helper cells 1 and 2
 # >>[<<+>>-]                   # move value back to value cell
 # <----                        # subtract test number (4) from value cell
-# [++++>-1<[-]]                # if the value is not 0 revert value and pre negate the test flag
+# [>-<[-]]                 # if the value is not 0 revert value and pre negate the test flag
 # >+                           # set flag to indicate loop
 # [>.>>.<<<<<[-]>>[-]]         # print cell 5 (till) and 7 (plant) clear value then reset flag
 # <<                           # return to value cell
 
-# # check for value 5
+# # check for value 56
 # >[-]>[-]<<                   # first clear helper cells
 # [>+>+<<-]                    # move value to helper cells 1 and 2
 # >>[<<+>>-]                   # move value back to value cell
 # <-----                       # subtract test number (5) from value cell
-# [+++++>-1<[-]]               # if the value is not 0 revert value and pre negate the test flag
+# [>-<[-]]                # if the value is not 0 revert value and pre negate the test flag
 # >+                           # set flag to indicate loop
 # [>.>>.<<<<<[-]>>[-]]         # print cell 5 (till) and 7 (plant) clear value then reset flag
 # <<                           # return to value cell and end elif
@@ -265,6 +271,6 @@ def the_farmer_was_brainfucked(code):
 
 
 
-code = ">>>>>>><[-]++++++++++++++++[>++++++++<-]>+++>[-]+++++>[-]++++<<<[-]+<[-]<<<<<+[>++++++++[>,>[-]>[-]<<[>+>+<<-]>>[<<+>>-]<-------------------[+++++++++++++++++++>-<[-]]>+[>>.>.<<<<<[-]>>[-]]<<>[-]>[-]<<[>+>+<<-]>>[<<+>>-]<----[++++>-<[-]]>+[>.>>.<<<<<[-]>>[-]]<<>[-]>[-]<<[>+>+<<-]>>[<<+>>-]<-----[+++++>-<[-]]>+[>.>>.<<<<<[-]>>[-]]<<<>>>>>>>.<<<<<<<-]<>>>>>>>>>.<<<<<<<<<]"
+code = ">>>>>>><[-]++++++++++++++++[>++++++++<-]>+++>[-]+++++>[-]++++<<<[-]+<[-]<<<<<+[>++++++++[>,>[-]>[-]<<[>+>+<<-]>>[<<+>>-]<-------------------[>-<[-]]>+[>>.>.<<<<<[-]>>[-]]<<>[-]>[-]<<[>+>+<<-]>>[<<+>>-]<----[>-<[-]]>+[>.>>.<<<<<[-]>>[-]]<<>[-]>[-]<<[>+>+<<-]>>[<<+>>-]<-----[>-<[-]]>+[>.>>.<<<<<[-]>>[-]]<<<>>>>>>>.<<<<<<<-]<>>>>>>>>>.<<<<<<<<<]"
 the_farmer_was_brainfucked(code)
 
