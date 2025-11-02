@@ -203,7 +203,7 @@ def the_farmer_was_brainfucked(code):
         elif code[ptr] == ',':
             if len(plant_info) == 0:
                 plant_type = get_entity_type()
-                if plant_type == Entities.Hedge: #in mazes return chest coordinates and available moves
+                if plant_type == Entities.Hedge or plant_type == Entities.Chest: #in mazes return chest coordinates and available moves
                     x = get_pos_x()
                     y = get_pos_y()
                     moves = 0
