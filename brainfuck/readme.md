@@ -35,4 +35,18 @@ If the plant is a pumpkin it returns a 1 byte ID. Values will be reused after 25
 When on an empty tilled field or apple second read will be a bitmask of available moves: (North=1, East=2, South=4, West=8)  
 When on an apple this is followed by the X and Y coordinate of the next apple.
 
-When on a hedge or chest return X and Y of the chest, followed by available moves.
+When on a hedge or treasure return X and Y of the chest, followed by available moves.
+
+## Hardcoded brainfuck code
+
+I have hardcoded some brainfuck functions for speed efficiency:
+
+`[-]` : Set memory at pointer to 0
+
+`[>+>+<<-]>>[<<+>>-]` :  Copy byte to next memory cell, assuming the next two cells are already empty.  
+If the next two cells are not empty the copy will be incorrect and the original data will be destroyed.  
+Data pointer will be set to temp cell
+
+`>>>[-]>[-]<<[-]<<[>>>+<<[->>[-]>+<<<]>>[-<+>]>[-<<<+>>>]<<<-<-]` : Z = X > Y  
+ First cell is X, second cell is Y, third cell is Z, next two cells are used as temp data and will be emptied.
+
