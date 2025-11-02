@@ -85,7 +85,6 @@ def the_farmer_was_brainfucked(code):
                 memory[data_ptr+3] = pos4
                 memory[data_ptr+4] = pos5
                 ptr = ptr + 63
-                quick_print(code[ptr])
             else:
                 while code[ptr] == '>':
                     data_ptr += 1
@@ -149,7 +148,6 @@ def the_farmer_was_brainfucked(code):
                     bracket_partners[ptr] = start
             ptr += 1
         elif code[ptr] == '.':
-            quick_print("write: ", memory[data_ptr])
             if memory[data_ptr] == 0:
                 till()
                 plant_info = []
@@ -230,7 +228,6 @@ def the_farmer_was_brainfucked(code):
                     if west not in pumpkin_numbers: 
                         pumpkin_numbers[west] = len(pumpkin_numbers)%256  
                     plant_info.append(pumpkin_numbers[west])
-            #quick_print("Read: ", plant_info[info_ptr])
             memory[data_ptr] = plant_info[info_ptr]
             info_ptr = info_ptr + 1
             if len(plant_info) > 1 and info_ptr >= len(plant_info):
