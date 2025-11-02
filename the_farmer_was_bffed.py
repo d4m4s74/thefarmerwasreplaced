@@ -10,6 +10,11 @@ set_world_size(8)
 # 10000xxx
 # use_item:
 # 010000xx
+# generate maze
+# 01000100 use enough weird substance to generate maze
+# change_hat:
+# 01000101 straw_hat
+# 01000110 dinosaur_hat
 # swap:
 # 001000xx
 #
@@ -49,8 +54,12 @@ set_world_size(8)
 # 00xxxxxx (Y)
 # fourth if measure hedge (maze)
 # 0000xxxx (available moves bitmask) (North=1, East=2, South=4, West=8)
-# second if measure empty tile (dinosaur)
+# second if measure empty tile or apple (dinosaur)
 # 0000xxxx (available moves bitmask) (North=1, East=2, South=4, West=8)
+# third if apple:
+# 00xxxxxx (X)
+# fourth if apple:
+# 00xxxxxx (Y)
 
 def left_shift(x, n):
     return x * (2 ** n)
@@ -174,6 +183,17 @@ def the_farmer_was_brainfucked(code):
                 info_ptr = 0
             elif memory[data_ptr] >= 64 and memory[data_ptr] < 67:
                 use_item(items[memory[data_ptr]],1)
+                plant_info = []
+                info_ptr = 0
+            elif memory[data_ptr] == 72:
+                substance = get_world_size() * 2**(num_unlocked(Unlocks.Mazes) - 1)
+                use_item(Items.Weird_Substance, substance)
+            elif memory[data_ptr] == 73:
+                change_hat(Hats.Straw_Hat)
+                plant_info = []
+                info_ptr = 0
+            elif memory[data_ptr] == 74:
+                change_hat(Hats.Dinosaur_Hat)
                 plant_info = []
                 info_ptr = 0
             elif memory[data_ptr] >= 128 and memory[data_ptr] < 135:
