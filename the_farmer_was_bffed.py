@@ -212,6 +212,21 @@ def the_farmer_was_brainfucked(code):
                     if can_move(West):
                         moves += 8
                     plant_info.append(moves)
+                elif plant_type == Entities.Apple: #When on apple first return possible moves to emulate empty tile, then return next location
+                    x, y = measure()
+                    plant_info.append(left_shift(plants_read[plant_type],2))
+                    moves = 0
+                    if can_move(North):
+                        moves += 1
+                    if can_move(East):
+                        moves += 2
+                    if can_move(South):
+                        moves += 4
+                    if can_move(West):
+                        moves += 8
+                    plant_info.append(moves)
+                    plant_info.append(x)
+                    plant_info.append(y)
                 else:
                     water_level = get_water() * 4 // 1
                     if water_level == 4:
