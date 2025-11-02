@@ -4,7 +4,7 @@ A simple-ish brainfuck interpreter for The Farmer Was Replaced changing `,` to r
 
 ## Usage
 
-Write your brainfuck code and minify it to a single string. I've included a minifier but there are many online.
+Write your brainfuck code and minify it to a single string. I've included a minifier but there are also many online.
 
 Either `import the_farmer_was_brainfucked` and run `the_farmer_was_brainfucked(code)` or replace the `code` string with your own string and run the file.
 
@@ -23,14 +23,14 @@ Generate ws*ws maze : 68
 
 Read values depend on the plant under the drone.
 
-First read is always a bitmask of water, entity, tilled state and harvestability: wwppppth  
+First read is always a bitmask of water, entity, tilled state and harvestability: WWEEEETH  
 Water is a number between 0 and 4 indicating 0-0.25, 0.25-0.5, 0.5-0.75 and 0.75-1
 
-If the plant has companions second read is the number of the companion, third read is the X coordinate and fourth the Y coordinate
+If the entity has companions second read is the number of the companion, third read is the X coordinate and fourth the Y coordinate
 
-If the plant has a value (Cactus or Sunflower) second read is the center value, followed by North, East, South and West
+If the entity has a value (Cactus or Sunflower) second read is the center value, followed by North, East, South and West
 
-If the plant is a pumpkin it returns a 1 byte ID. Values will be reused after 256 unique pumpkins measured.
+If the entity is a pumpkin it returns a 1 byte ID. Values will be reused after 256 unique pumpkins measured.
 
 When on an empty tilled field or apple second read will be a bitmask of available moves: (North=1, East=2, South=4, West=8)  
 When on an apple this is followed by the X and Y coordinate of the next apple.
