@@ -3,7 +3,7 @@ if len(sys.argv) < 2:
     print("Usage: python brainfuck_minifier.py <input_file> [output_file]")
     sys.exit(1)
 file_path = sys.argv[1]
-valid_chars = set(['>', '<', '+', '-', '.', ',', '[', ']'])
+valid_chars = set(['>', '<', '+', '-', '.', ',', '[', ']','?'])
 with open(file_path, 'r') as f:
     code = f.read()
 minified_code = ""
