@@ -1,7 +1,7 @@
 # memory structure: 1 loop0 loop1 loop2 value1 value2 comparison_flag temp0 temp1 swap_flag till harvest plant_cactus swap_east swap_north move_east move_north
 #initialize standard outputs
 >>>>>>>>>>>>            #move to cell 12
-<[-]++++++++++++++++[>++++++++<-]>+++++  # cell 12 = 128 (plant) plus 5 (carrot)
+<[-]++++++++++++++++[>++++++++<-]>+++++  # cell 12 = 128 (plant) plus 5 (cactus)
 >[-]+++++++++++++++++++++++++++++++++    # cell 13 = 32 (swap) plus 1 (East)
 >[-]++++++++++++++++++++++++++++++++     # cell 14 = 32 (swap) plus 0 (North)
 >[]+++++                                 # cell 15 = 4 (move) plus 1 (East)
