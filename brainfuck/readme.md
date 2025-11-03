@@ -48,5 +48,6 @@ If the next two cells are not empty the copy will be incorrect and the original 
 Data pointer will be set to temp cell
 
 `>>>[-]>[-]<<[-]<<[>>>+<<[->>[-]>+<<<]>>[-<+>]>[-<<<+>>>]<<<-<-]` : Z = X > Y  
- First cell is X, second cell is Y, third cell is Z, next two cells are used as temp data and will be emptied.
+ First cell is X, second cell is Y, third cell is Z, next two cells are used as temp data and will be emptied.  
+ Function based on code from [Esolangs Wiki](https://esolangs.org/wiki/Brainfuck_algorithms#z_=_x_%3E_y).
 
