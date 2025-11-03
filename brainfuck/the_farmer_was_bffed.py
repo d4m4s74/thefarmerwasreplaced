@@ -65,6 +65,9 @@ def left_shift(x, n):
 def right_shift(x, n):
     return x // (2 ** n)
 
+
+
+
 def the_farmer_was_brainfucked(code):
     ptr = 0
     data_ptr = 0
@@ -80,11 +83,14 @@ def the_farmer_was_brainfucked(code):
     plants_with_companions = {Entities.Grass,Entities.Bush,Entities.Tree,Entities.Carrot}
     plants_with_values = {Entities.Cactus,Entities.Sunflower}
     pumpkin_numbers = dict()
+    pumpkins = []
+    next_pumpkin_number = 0
     bracket_partners = dict()
     while ptr < code_length:
         if code[ptr] == 'b':
-            ptr += 1 #breakpoint
-        if code[ptr] == '>':
+            pass #breakpoint
+            ptr += 1
+        elif code[ptr] == '>':
             # hardcoded comparison because otherwise it takes a full minute
             if code[ptr+3] == '[' and code[ptr:ptr+63] == ">>>[-]>[-]<<[-]<<[>>>+<<[->>[-]>+<<<]>>[-<+>]>[-<<<+>>>]<<<-<-]":
                 pos0 = 0
@@ -140,6 +146,10 @@ def the_farmer_was_brainfucked(code):
                 if code[ptr+1] == '-' and code[ptr+2] == ']':
                     memory[data_ptr] = 0
                     ptr += 2
+                elif code[ptr:ptr+6] == '[-<->]':
+                    memory[data_ptr - 1] = (memory[data_ptr - 1] - memory[data_ptr]) % 256
+                    memory[data_ptr] = 0
+                    ptr += 5
                 elif code[ptr:ptr+19] == '[>+>+<<-]>>[<<+>>-]':
                     #copy value to next memory cell
                     memory[data_ptr + 1] = memory[data_ptr] + memory[data_ptr+1]
@@ -203,6 +213,9 @@ def the_farmer_was_brainfucked(code):
                 info_ptr = 0
             ptr += 1
         elif code[ptr] == ',':
+            if get_entity_type() == Entities.Dead_Pumpkin:
+                plant_info = []
+                info_ptr = 0
             if len(plant_info) == 0:
                 plant_type = get_entity_type()
                 if plant_type == Entities.Hedge or plant_type == Entities.Treasure: #in mazes return chest coordinates and available moves
@@ -283,23 +296,63 @@ def the_farmer_was_brainfucked(code):
                 elif plant_type == Entities.Pumpkin:
                     center = measure()
                     if center not in pumpkin_numbers:
-                        pumpkin_numbers[center] = len(pumpkin_numbers)%256
+                        if len(pumpkins) == 255:
+                            old_pumpkin = pumpkins[next_pumpkin_number]
+                            pumpkin_numbers.pop(old_pumpkin)
+                            pumpkins[next_pumpkin_number] = center
+                            pumpkin_numbers[center] = next_pumpkin_number
+                        else:
+                            pumpkin_numbers[center] = next_pumpkin_number
+                            pumpkins.append(center)
+                        next_pumpkin_number = (next_pumpkin_number + 1) % 255
                     plant_info.append(pumpkin_numbers[center])  
                     north = measure(North)
                     if north not in pumpkin_numbers:
-                        pumpkin_numbers[north] = len(pumpkin_numbers)%256
+                        if len(pumpkins) == 255:
+                            old_pumpkin = pumpkins[next_pumpkin_number]
+                            pumpkin_numbers.pop(old_pumpkin)
+                            pumpkins[next_pumpkin_number] = north
+                            pumpkin_numbers[north] = next_pumpkin_number
+                        else:
+                            pumpkin_numbers[north] = next_pumpkin_number
+                            pumpkins.append(north)
+                        next_pumpkin_number = (next_pumpkin_number + 1) % 255
                     plant_info.append(pumpkin_numbers[north])  
                     east = measure(East)
                     if east not in pumpkin_numbers:
-                        pumpkin_numbers[east] = len(pumpkin_numbers)%256  
+                        if len(pumpkins) == 255:
+                            old_pumpkin = pumpkins[next_pumpkin_number]
+                            pumpkin_numbers.pop(old_pumpkin)
+                            pumpkins[next_pumpkin_number] = east
+                            pumpkin_numbers[east] = next_pumpkin_number
+                        else:
+                            pumpkin_numbers[east] = next_pumpkin_number
+                            pumpkins.append(east)
+                        next_pumpkin_number = (next_pumpkin_number + 1) % 255
                     plant_info.append(pumpkin_numbers[east])  
                     south = measure(South)
                     if south not in pumpkin_numbers:
-                        pumpkin_numbers[south] = len(pumpkin_numbers)%256  
+                        if len(pumpkins) == 255:
+                            old_pumpkin = pumpkins[next_pumpkin_number]
+                            pumpkin_numbers.pop(old_pumpkin)
+                            pumpkins[next_pumpkin_number] = south
+                            pumpkin_numbers[south] = next_pumpkin_number
+                        else:
+                            pumpkin_numbers[south] = next_pumpkin_number
+                            pumpkins.append(south)
+                        next_pumpkin_number = (next_pumpkin_number + 1) % 255
                     plant_info.append(pumpkin_numbers[south])  
                     west = measure(West)
                     if west not in pumpkin_numbers: 
-                        pumpkin_numbers[west] = len(pumpkin_numbers)%256  
+                        if len(pumpkins) == 255:
+                            old_pumpkin = pumpkins[next_pumpkin_number]
+                            pumpkin_numbers.pop(old_pumpkin)
+                            pumpkins[next_pumpkin_number] = west
+                            pumpkin_numbers[west] = next_pumpkin_number
+                        else:
+                            pumpkin_numbers[west] = next_pumpkin_number
+                            pumpkins.append(west)
+                        next_pumpkin_number = (next_pumpkin_number + 1) % 255
                     plant_info.append(pumpkin_numbers[west])
             memory[data_ptr] = plant_info[info_ptr]
             info_ptr = info_ptr + 1
@@ -307,12 +360,16 @@ def the_farmer_was_brainfucked(code):
                 plant_info = []
                 info_ptr = 0
             ptr += 1
+        else:
+            ptr += 1
         
 if __name__ == "__main__":
     set_world_size(8)
     # carrot code
-    code = ">>>>>>><[-]++++++++++++++++[>++++++++<-]>+++>[-]+++++>[-]++++<<<[-]+<[-]<<<<<+[>++++++++[>,>[-]>[-]<<[>+>+<<-]>>[<<+>>-]<-------------------[>-<[-]]>+[>>.>.<<<<<[-]>>[-]]<<>[-]>[-]<<[>+>+<<-]>>[<<+>>-]<----[>-<[-]]>+[>.>>.<<<<<[-]>>[-]]<<>[-]>[-]<<[>+>+<<-]>>[<<+>>-]<-----[>-<[-]]>+[>.>>.<<<<<[-]>>[-]]<<<>>>>>>>.<<<<<<<-]<>>>>>>>>>.<<<<<<<<<]"
+    #code = ">>>>>>><[-]++++++++++++++++[>++++++++<-]>+++>[-]+++++>[-]++++<<<[-]+<[-]<<<<<+[>++++++++[>,>[-]>[-]<<[>+>+<<-]>>[<<+>>-]<-------------------[>-<[-]]>+[>>.>.<<<<<[-]>>[-]]<<>[-]>[-]<<[>+>+<<-]>>[<<+>>-]<----[>-<[-]]>+[>.>>.<<<<<[-]>>[-]]<<>[-]>[-]<<[>+>+<<-]>>[<<+>>-]<-----[>-<[-]]>+[>.>>.<<<<<[-]>>[-]]<<<>>>>>>>.<<<<<<<-]<>>>>>>>>>.<<<<<<<<<]"
     # cactus code
     #code = ">>>>>>>>>>>><[-]++++++++++++++++[>++++++++<-]>+++++>[-]+++++++++++++++++++++++++++++++++>[-]++++++++++++++++++++++++++++++++>[]+++++>[-]++++<<<<<[-]+<[-]<<<<<<<<<<>++++++++[>++++++++[>>>>>>>>.>>.>>>.<<<<<<<<<<<<<-]>>>>>>>>>>>>>>.<<<<<<<<<<<<<<<-]<+[>++++++++[>+[->>>>>>>[-]<<<<<<+++++++[>,,>,,<>>>[-]>[-]<<[-]<<[>>>+<<[->>[-]>+<<<]>>[-<+>]>[-<<<+>>>]<<<-<-]>>[>>>+>>>>.<<<<<<<[-]]>>>>>>>>>.<<<<<<<<<<<<-]>>>>>>>>>>>>.<<<<<<[<<<<<<<+>>>>>>>[-]]<<<<<<<]>>>>>>>>>>>>>>.<<<<<<<<<<<<<<<-]++++++++[>+[->>>>>>>[-]<<<<<<+++++++[>,,>,<>>>[-]>[-]<<[-]<<[>>>+<<[->>[-]>+<<<]>>[-<+>]>[-<<<+>>>]<<<-<-]>>[>>>+>>>>>.<<<<<<<<[-]]>>>>>>>>>>.<<<<<<<<<<<<<-]>>>>>>>>>>>>>.<<<<<<<[<<<<<<<+>>>>>>>[-]]<<<<<<<]>>>>>>>>>>>>>.<<<<<<<<<<<<<<-]>>>>>>>>>>.<<<<<<<<<<++++++++[>++++++++[>>>>>>>>>>.>>>.<<<<<<<<<<<<<-]>>>>>>>>>>>>>>.<<<<<<<<<<<<<<<-]<]"
+    # pumpkin code
+    code = ">>>>+++++++++++++++++++++++>>>>>>><[-]++++++++++++++++[>++++++++<-]>++++>+++++>++++<<<[-]+<[-]<<<<<<<<<++++++++[>++++++++[>>>>>>>>.>>.>.<<<<<<<<<<<-]>>>>>>>>>>>>.<<<<<<<<<<<<<-]+[>+[->++++++++[>++++++++[>>[-]>[-]>[-]<<<[>+>+<<-]>>[<<+>>-],[-<->]<[>>+<<[-]]>>[>>>>.<<<<[-]]>>>>>.<<<<<<<<<-]>>>>>>>>>>.<<<<<<<<<<<-]>>[>+>+<<-]>>[<<+>>-],[-<->]<[>>-<<<<<<+>>>>[-]]>>+[<<,>,,,[-<->]<[<<<<+>>>>[-]],>>[-]]<<<<<<]>>>>>>>>>.<<<<<<<<<++++++++[>++++++++[>>>>>>>>>.>.<<<<<<<<<<-]>>>>>>>>>>>.<<<<<<<<<<<<-]<]"
     the_farmer_was_brainfucked(code)
 
