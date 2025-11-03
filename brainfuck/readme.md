@@ -49,5 +49,6 @@ Data pointer will be set to temp cell
 
 `>>>[-]>[-]<<[-]<<[>>>+<<[->>[-]>+<<<]>>[-<+>]>[-<<<+>>>]<<<-<-]` : Z = X > Y  
  First cell is X, second cell is Y, third cell is Z, next two cells are used as temp data and will be emptied.  
+ X will end up empty. Y is B - A. Z is 1 if X Y B or 0 X <= Y. Can also be used for if X > Y elif X == Y because the Y cell will be 0 if X and Y are equal.  
  Function based on code from [Esolangs Wiki](https://esolangs.org/wiki/Brainfuck_algorithms#z_=_x_%3E_y).
 
