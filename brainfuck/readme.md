@@ -24,7 +24,7 @@ Generate ws*ws maze : 68
 Read values depend on the plant under the drone.
 
 First read is always a bitmask of water, entity, tilled state and harvestability: WWEEEETH  
-`{None:0,Entities.Grass:1,Entities.Bush:2,Entities.Tree:3,Entities.Carrot:4,Entities.Pumpkin:5,Entities.Cactus:6,Entities.Sunflower:7,Entities.Dead_Pumpkin:8,Entities.Apple:9,Entities.Treasure:10,Entities.Hedge:11}`
+`{None:0,Entities.Grass:1,Entities.Bush:2,Entities.Tree:3,Entities.Carrot:4,Entities.Pumpkin:5,Entities.Cactus:6,Entities.Sunflower:7,Entities.Dead_Pumpkin:8,Entities.Apple:9,Entities.Treasure:10,Entities.Hedge:11}`  
 Water is a number between 0 and 4 indicating 0-0.25, 0.25-0.5, 0.5-0.75 and 0.75-1
 
 If the entity has companions second read is the number of the companion, third read is the X coordinate and fourth the Y coordinate
