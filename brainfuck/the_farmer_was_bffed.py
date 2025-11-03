@@ -87,8 +87,8 @@ def the_farmer_was_brainfucked(code):
     next_pumpkin_number = 0
     bracket_partners = dict()
     while ptr < code_length:
-        if code[ptr] == 'b':
-            pass #breakpoint
+        if code[ptr] == '?':
+            pass #put breakpoint here
             ptr += 1
         elif code[ptr] == '>':
             # hardcoded comparison because otherwise it takes a full minute
