@@ -235,7 +235,15 @@ def the_farmer_was_brainfucked(code):
                     plant_info.append(y)
                     plant_info.append(moves)
                 elif plant_type == None: #when on an empty tile return move directions for use in dinosaur code
-                    plant_info.append(0)
+                    water_level = get_water() * 4 // 1
+                    if water_level == 4:
+                        water_level = 3
+                    tilled = 1
+                    harvestable = 0
+                    water_level_shifted = left_shift(water_level,6)
+                    plant_type_shifted = 0
+                    first_byte = water_level_shifted + plant_type_shifted + left_shift(tilled,1) + harvestable
+                    plant_info.append(first_byte)
                     moves = 0
                     if can_move(North):
                         moves += 1
@@ -247,8 +255,16 @@ def the_farmer_was_brainfucked(code):
                         moves += 8
                     plant_info.append(moves)
                 elif plant_type == Entities.Apple: #When on apple first return possible moves to emulate empty tile, then return next location
+                    water_level = get_water() * 4 // 1
+                    if water_level == 4:
+                        water_level = 3
+                    tilled = 1
+                    harvestable = 0
+                    water_level_shifted = left_shift(water_level,6)
+                    plant_type_shifted = left_shift(plants_read[plant_type],2)
+                    first_byte = water_level_shifted + plant_type_shifted + left_shift(tilled,1) + harvestable
+                    plant_info.append(first_byte)
                     x, y = measure()
-                    plant_info.append(left_shift(plants_read[plant_type],2))
                     moves = 0
                     if can_move(North):
                         moves += 1
