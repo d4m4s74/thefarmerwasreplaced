@@ -29,7 +29,7 @@
 >+[-                                    # Outer loop Disable immediately            memory location 1
 >++++++++[                              # y loop Run 8 times                        memory location 2
 >++++++++[                              # x loop Run 8 times                        memory location 3
->>[-]>[-]>[-]<<<                        # clear value 0  1 and temp1                memory location 4
+>>[-]>[-]>[-]<<<                        # clear value 0, 1 and temp1                memory location 4
 [>+>+<<-]>>[<<+>>-]                     # Copy pumpkin value to value0              memory location 6
 ,                                       # Get current entity value                  memory location 6
 [-<->]<                                 # Subtract value 1 from value 0             memory location 5  #note add to interpreter
@@ -57,8 +57,7 @@
 # Replant after harvest
 ++++++++[                               # y loop Run 8 times                        memory location 1
 >++++++++[                              # x loop Run 8 times                        memory location 2
->>>>>>>.                                # output till                               memory location 9
->>.                                     # output plant pumpkin                      memory location 11
+>>>>>>>>>.                              # output plant pumpkin                      memory location 11
 >.                                      # output move east                          memory location 12
 <<<<<<<<<<-                             # decrement x loop                          memory location 2
 ]                                       # end x loop                                memory location 2
