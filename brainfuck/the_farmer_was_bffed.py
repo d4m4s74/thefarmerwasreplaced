@@ -196,14 +196,14 @@ def the_farmer_was_brainfucked(code):
                 use_item(items[memory[data_ptr]],1)
                 plant_info = []
                 info_ptr = 0
-            elif memory[data_ptr] == 72:
+            elif memory[data_ptr] == 68:
                 substance = get_world_size() * 2**(num_unlocked(Unlocks.Mazes) - 1)
                 use_item(Items.Weird_Substance, substance)
-            elif memory[data_ptr] == 73:
+            elif memory[data_ptr] == 69:
                 change_hat(Hats.Straw_Hat)
                 plant_info = []
                 info_ptr = 0
-            elif memory[data_ptr] == 74:
+            elif memory[data_ptr] == 70:
                 change_hat(Hats.Dinosaur_Hat)
                 plant_info = []
                 info_ptr = 0
@@ -221,19 +221,19 @@ def the_farmer_was_brainfucked(code):
                 if plant_type == Entities.Hedge or plant_type == Entities.Treasure: #in mazes return chest coordinates and available moves
                     x = get_pos_x()
                     y = get_pos_y()
-                    moves = 0
+                    available_moves = 0
                     if can_move(North):
-                        moves += 1
+                        available_moves += 1
                     if can_move(East):
-                        moves += 2
+                        available_moves += 2
                     if can_move(South):
-                        moves += 4
+                        available_moves += 4
                     if can_move(West):
-                        moves += 8
+                        available_moves += 8
                     plant_info.append(left_shift(plants_read[plant_type],2))
                     plant_info.append(x)
                     plant_info.append(y)
-                    plant_info.append(moves)
+                    plant_info.append(available_moves)
                 elif plant_type == None: #when on an empty tile return move directions for use in dinosaur code
                     water_level = get_water() * 4 // 1
                     if water_level == 4:
@@ -244,16 +244,16 @@ def the_farmer_was_brainfucked(code):
                     plant_type_shifted = 0
                     first_byte = water_level_shifted + plant_type_shifted + left_shift(tilled,1) + harvestable
                     plant_info.append(first_byte)
-                    moves = 0
+                    available_moves = 0
                     if can_move(North):
-                        moves += 1
+                        available_moves += 1
                     if can_move(East):
-                        moves += 2
+                        available_moves += 2
                     if can_move(South):
-                        moves += 4
+                        available_moves += 4
                     if can_move(West):
-                        moves += 8
-                    plant_info.append(moves)
+                        available_moves += 8
+                    plant_info.append(available_moves)
                 elif plant_type == Entities.Apple: #When on apple first return possible moves to emulate empty tile, then return next location
                     water_level = get_water() * 4 // 1
                     if water_level == 4:
@@ -265,16 +265,16 @@ def the_farmer_was_brainfucked(code):
                     first_byte = water_level_shifted + plant_type_shifted + left_shift(tilled,1) + harvestable
                     plant_info.append(first_byte)
                     x, y = measure()
-                    moves = 0
+                    available_moves = 0
                     if can_move(North):
-                        moves += 1
+                        available_moves += 1
                     if can_move(East):
-                        moves += 2
+                        available_moves += 2
                     if can_move(South):
-                        moves += 4
+                        available_moves += 4
                     if can_move(West):
-                        moves += 8
-                    plant_info.append(moves)
+                        available_moves += 8
+                    plant_info.append(available_moves)
                     plant_info.append(x)
                     plant_info.append(y)
                 else:
@@ -386,6 +386,8 @@ if __name__ == "__main__":
     # cactus code
     #code = ">>>>>>>>>>>><[-]++++++++++++++++[>++++++++<-]>+++++>[-]+++++++++++++++++++++++++++++++++>[-]++++++++++++++++++++++++++++++++>[]+++++>[-]++++<<<<<[-]+<[-]<<<<<<<<<<>++++++++[>++++++++[>>>>>>>>.>>.>>>.<<<<<<<<<<<<<-]>>>>>>>>>>>>>>.<<<<<<<<<<<<<<<-]<+[>++++++++[>+[->>>>>>>[-]<<<<<<+++++++[>,,>,,<>>>[-]>[-]<<[-]<<[>>>+<<[->>[-]>+<<<]>>[-<+>]>[-<<<+>>>]<<<-<-]>>[>>>+>>>>.<<<<<<<[-]]>>>>>>>>>.<<<<<<<<<<<<-]>>>>>>>>>>>>.<<<<<<[<<<<<<<+>>>>>>>[-]]<<<<<<<]>>>>>>>>>>>>>>.<<<<<<<<<<<<<<<-]++++++++[>+[->>>>>>>[-]<<<<<<+++++++[>,,>,<>>>[-]>[-]<<[-]<<[>>>+<<[->>[-]>+<<<]>>[-<+>]>[-<<<+>>>]<<<-<-]>>[>>>+>>>>>.<<<<<<<<[-]]>>>>>>>>>>.<<<<<<<<<<<<<-]>>>>>>>>>>>>>.<<<<<<<[<<<<<<<+>>>>>>>[-]]<<<<<<<]>>>>>>>>>>>>>.<<<<<<<<<<<<<<-]>>>>>>>>>>.<<<<<<<<<<++++++++[>++++++++[>>>>>>>>>>.>>>.<<<<<<<<<<<<<-]>>>>>>>>>>>>>>.<<<<<<<<<<<<<<<-]<]"
     # pumpkin code
-    code = ">>>>+++++++++++++++++++++++>>>>>>><[-]++++++++++++++++[>++++++++<-]>++++>+++++>++++<<<[-]+<[-]<<<<<<<<<++++++++[>++++++++[>>>>>>>>.>>.>.<<<<<<<<<<<-]>>>>>>>>>>>>.<<<<<<<<<<<<<-]+[>+[->++++++++[>++++++++[>>[-]>[-]>[-]<<<[>+>+<<-]>>[<<+>>-],[-<->]<[>>+<<[-]]>>[>>>>.<<<<[-]]>>>>>.<<<<<<<<<-]>>>>>>>>>>.<<<<<<<<<<<-]>>[>+>+<<-]>>[<<+>>-],[-<->]<[>>-<<<<<<+>>>>[-]]>>+[<<,>,,,[-<->]<[<<<<+>>>>[-]],>>[-]]<<<<<<]>>>>>>>>>.<<<<<<<<<++++++++[>++++++++[>>>>>>>>>.>.<<<<<<<<<<-]>>>>>>>>>>>.<<<<<<<<<<<<-]<]"
+    #code = ">>>>+++++++++++++++++++++++>>>>>>><[-]++++++++++++++++[>++++++++<-]>++++>+++++>++++<<<[-]+<[-]<<<<<<<<<++++++++[>++++++++[>>>>>>>>.>>.>.<<<<<<<<<<<-]>>>>>>>>>>>>.<<<<<<<<<<<<<-]+[>+[->++++++++[>++++++++[>>[-]>[-]>[-]<<<[>+>+<<-]>>[<<+>>-],[-<->]<[>>+<<[-]]>>[>>>>.<<<<[-]]>>>>>.<<<<<<<<<-]>>>>>>>>>>.<<<<<<<<<<<-]>>[>+>+<<-]>>[<<+>>-],[-<->]<[>>-<<<<<<+>>>>[-]]>>+[<<,>,,,[-<->]<[<<<<+>>>>[-]],>>[-]]<<<<<<]>>>>>>>>>.<<<<<<<<<++++++++[>++++++++[>>>>>>>>>.>.<<<<<<<<<<-]>>>>>>>>>>>.<<<<<<<<<<<<-]<]"
+    # dinosaur code
+    code = ">>>>>>>>+++++++++++[>++++++>++++++<<-]>++++>+++<<[-]+++++++<++++++<+++++<++++<<<<<+[>>>>>>>>>.<........<........<<<<<<+[>>>>>.<<<<++++[>>>>......<.>>>......<<<.<<<-]>>>>>>.<.......<<<<<<,,]>>>>>>>>>.<<<<<<<<<<]"
     the_farmer_was_brainfucked(code)
 
